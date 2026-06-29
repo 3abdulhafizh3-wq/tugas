@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Data Siswa</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2ecc71;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: auto;
+            font-size: 14px;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Data Siswa</h2>
+    
+    <form id="siswaForm">
+        <div class="form-group">
+            <label for="nama">Nama Siswa:</label>
+            <input type="text" id="nama" required placeholder="Masukkan nama lengkap...">
+        </div>
+        
+        <div class="form-group">
+            <label for="umur">Umur:</label>
+            <input type="number" id="umur" required placeholder="Masukkan umur..." min="1">
+        </div>
+        
+        <div class="form-group">
+            <label for="jurusan">Kelas & Jurusan:</label>
+            <input type="text" id="jurusan" required placeholder="Masukkan kelas & (jurusan)...">
+        </div>
+        
+        <button type="submit">Simpan Data</button>
+    </form>
+
+    <table id="siswaTable">
+        <thead>
+            <tr>
+                <th>Nama</th>
+                <th>Umur</th>
+                <th>Kelas & Jurusan</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr id="noDataRow">
+                <td colspan="4" class="empty-message">Belum ada data siswa.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const form = document.getElementById('siswaForm');
+    const tableBody = document.getElementById('tableBody');
+    const noDataRow = document.getElementById('noDataRow');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const nama = document.getElementById('nama').value;
+        const umur = document.getElementById('umur').value;
+        const jurusan = document.getElementById('jurusan').value;
+        if (noDataRow) {
+            noDataRow.remove();
+        }
+
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td>${nama}</td>
+            <td>${umur} Tahun</td>
+            <td>${jurusan}</td>
+            <td><button class="btn-delete">Hapus</button></td>
+        `;
+
+        const deleteBtn = row.querySelector('.btn-delete');
+        deleteBtn.addEventListener('click', function() {
+            row.remove();
+            
+            if (tableBody.children.length === 0) {
+                tableBody.appendChild(noDataRow);
+            }
+        });
+
+        tableBody.appendChild(row);
+
+        form.reset();
+    });
+</script>
+</body>
+</html>
